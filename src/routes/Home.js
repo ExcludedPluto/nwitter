@@ -19,6 +19,7 @@ const Home = ({ userObj }) => {
                 }));
                 setNweets((prev) => nweetArray);
             });
+        return;
     }, []);
 
     const onSubmit = async (event) => {

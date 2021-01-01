@@ -1,76 +1,101 @@
 import { authService, firebaseInstance } from 'myFirebase';
 import React, { useState } from 'react';
 
-const Auth = () =>{ 
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
+const Auth = () => {
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
     const [newAccount, setNewAccount] = useState(true);
-    const [error, setError] = useState("");
+    const [error, setError] = useState('');
+
     const onChange = (event) => {
-       const {target:{name, value}} = event;
-       if(name === "email") {
-           setEmail(value)
-       } else if(name ==="password") {
-           setPassword(value);
-       }
-    }
-    const onSubmit = async(event) => {
+        const {
+            target: { name, value },
+        } = event;
+        if (name === 'email') {
+            setEmail(value);
+        } else if (name === 'password') {
+            setPassword(value);
+        }
+    };
+
+    const onSubmit = async (event) => {
         //이벤트 기본 행위를 막기위한 함수 삽입
         event.preventDefault();
         try {
             let data;
-            if(newAccount) {
+            if (newAccount) {
                 //create account
-                data = await authService.createUserWithEmailAndPassword(email, password);
-
+                data = await authService.createUserWithEmailAndPassword(
+                    email,
+                    password
+                );
             } else {
                 // log in
-                data = await authService.signInWithEmailAndPassword(email, password);
+                data = await authService.signInWithEmailAndPassword(
+                    email,
+                    password
+                );
             }
             console.log(data);
         } catch (error) {
             setError(error.message);
         }
-    }
-    
-    const toggleAccount = () => setNewAccount(prev => !prev);
-    const onSocialClick = async(event) => {
-        const {target:{name}} = event;
+    };
+
+    const toggleAccount = () => setNewAccount((prev) => !prev);
+    const onSocialClick = async (event) => {
+        const {
+            target: { name },
+        } = event;
         let provider;
-        if(name === "google") {
+        if (name === 'google') {
             provider = new firebaseInstance.auth.GoogleAuthProvider();
-        } else if(name === "github") {
+        } else if (name === 'github') {
             provider = new firebaseInstance.auth.GithubAuthProvider();
-        }   
-        
+        }
+
         const data = await authService.signInWithPopup(provider);
         console.log(data);
-    }
-    return (<div>
-        <form onSubmit={onSubmit}>
-            <input 
-                name="email"
-                type="text" 
-                placeholder="email" 
-                required value={email}
-                onChange={onChange}
-            />
-            <input 
-                name="password"
-                type="password" 
-                placeholder="password" 
-                required value={password}
-                onChange={onChange}
-            />
-            <input type="submit" value={newAccount ? "Create Account" : "Sign In"} />
-            {error}
-        </form>
-        <span onClick={toggleAccount}>{newAccount ? "Sign In" : "CreateAccount"}</span>
+    };
+    return (
         <div>
-            <button onClick={onSocialClick} name="google"> Continue with Google</button>
-            <button onClick={onSocialClick} name="github"> Continue with Github</button>
+            <form onSubmit={onSubmit}>
+                <input
+                    name="email"
+                    type="text"
+                    placeholder="email"
+                    required
+                    value={email}
+                    onChange={onChange}
+                />
+                <input
+                    name="password"
+                    type="password"
+                    placeholder="password"
+                    required
+                    value={password}
+                    onChange={onChange}
+                />
+                <input
+                    type="submit"
+                    value={newAccount ? 'Create Account' : 'Sign In'}
+                />
+                {error}
+            </form>
+            <span onClick={toggleAccount}>
+                {newAccount ? 'Sign In' : 'CreateAccount'}
+            </span>
+            <div>
+                <button onClick={onSocialClick} name="google">
+                    {' '}
+                    Continue with Google
+                </button>
+                <button onClick={onSocialClick} name="github">
+                    {' '}
+                    Continue with Github
+                </button>
+            </div>
         </div>
-    </div>
-    ); 
+    );
 };
 export default Auth;
