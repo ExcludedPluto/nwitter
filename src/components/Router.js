@@ -9,11 +9,12 @@ import Auth from '../routes/Auth';
 import Home from '../routes/Home';
 import Navigation from 'components/Navigation';
 import Profile from 'routes/Profile';
+import MyNweet from 'components/MyNweet';
 
 const AppRouter = ({ isLoggedIn, userObj }) => {
     return (
         <Router>
-            {isLoggedIn && <Navigation></Navigation>}
+            {isLoggedIn && <Navigation displayName={userObj.displayName} />}
             <Switch>
                 {isLoggedIn ? (
                     <>
@@ -21,7 +22,10 @@ const AppRouter = ({ isLoggedIn, userObj }) => {
                             <Home userObj={userObj} />
                         </Route>
                         <Route exact path="/profile">
-                            <Profile />
+                            <Profile userObj={userObj} />
+                        </Route>
+                        <Route exact path="/MyNweet">
+                            <MyNweet userId={userObj.uid} />
                         </Route>
                         <Redirect from="*" to="/" />
                     </>
