@@ -5,7 +5,6 @@ import { authService } from 'myFirebase';
 function App() {
     const [init, setInit] = useState(false);
     const [userObj, setUserObj] = useState(null);
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
 
     useEffect(() => {
         authService.onAuthStateChanged((user) => {
@@ -15,9 +14,8 @@ function App() {
                     uid: user.uid,
                     updateProfile: (args) => user.updateProfile(args),
                 });
-                setIsLoggedIn((prev) => true);
             } else {
-                setIsLoggedIn((prev) => false);
+                setUserObj((prev) => null);
             }
             setInit(true);
         });
@@ -37,7 +35,7 @@ function App() {
             {init ? (
                 <AppRouter
                     refreshUser={refreshUser}
-                    isLoggedIn={isLoggedIn}
+                    isLoggedIn={Boolean(userObj)}
                     userObj={userObj}
                 ></AppRouter>
             ) : (
