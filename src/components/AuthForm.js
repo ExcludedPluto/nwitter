@@ -36,6 +36,7 @@ function AuthForm() {
                     password
                 );
             }
+            authService.setPersistence(authService.Auth.Persistence.SESSION);
             console.log(data);
         } catch (error) {
             setError(error.message);

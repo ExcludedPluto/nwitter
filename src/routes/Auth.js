@@ -21,6 +21,7 @@ const Auth = () => {
         }
 
         const data = await authService.signInWithPopup(provider);
+        authService.setPersistence(authService.Auth.Persistence.SESSION);
         console.log(data);
     };
     return (
