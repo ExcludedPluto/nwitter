@@ -23,7 +23,7 @@ function MyNweet({ userId }) {
     }, [getMyNweet]);
 
     return (
-        <div>
+        <div className="container">
             {nweets.map((nweet) => (
                 <Nweet key={nweet.id} nweetObj={nweet} isOwner={true} />
             ))}
