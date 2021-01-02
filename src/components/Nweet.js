@@ -34,9 +34,7 @@ function Nweet({ nweetObj, isOwner }) {
         );
     };
     const onDeleteClick = async () => {
-        const ok = window.confirm(
-            'Are you sure you want to delete this nweet?'
-        );
+        const ok = window.confirm('정말로 삭제하시겠습니까?');
         if (ok) {
             await dbService.doc(`nweets/${nweetObj.id}`).delete();
             await storageService.refFromURL(nweetObj.attachmentUrl).delete();
